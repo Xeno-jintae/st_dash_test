@@ -16,11 +16,15 @@ data_2depth_pv_10years = pd.read_csv("./data/statics_2depth_pv_10years.csv", ind
 data_2depth_pv_5years = pd.read_csv("./data/statics_2depth_pv_5years.csv", index_col=0)
 
 data_2depth_pv_fillna_5years = pd.read_csv("./data/statics_2depth_pv_fillna_5years.csv", index_col=0)
+data_2depth_pv_fillna_5years2 = pd.read_csv("./data/statics_2depth_pv_fillna_5years2.csv", index_col=0)
 
 st.title("2-Depth Data를 이용한 그래프")
+st.write("CPI(소비자물가지수)를 이용하여 물가상승률이 적용된 임금에 대한 결과입니다.")
+st.write("두 그래프 모두 5년 단위로 그룹화 되었습니다.")
+st.write("기본적인 나이에 대한 범위는 20~64세 이며, 이후의 나이 범위에 데이터가 존재하는 경우에만 그래프는 보여집니다.")
 
 # Dropdown Menu
-dropdown = st.selectbox("select", data_depth["definition2"])
+dropdown = st.selectbox("*직종을 선택해주세요.*", data_depth["definition2"])
 
 col1, col2 = st.columns(2)
 
@@ -171,7 +175,7 @@ fig3_pv.update_layout(
         overlaying="y"))
 
 filtered_data_count_pv_fillna_5years = data_2depth_pv_fillna_5years[data_2depth_pv_fillna_5years["depth2"] == int(dropdown[:2])]
-filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
+# filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
 # Create figure with secondary y-axis
 fig3_pv_fillna = make_subplots(specs=[[{"secondary_y": True}]])
 # Add traces
@@ -180,30 +184,46 @@ fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_
 fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 2]["p_age_range"].values,
                      y=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 2]["median_wage"].values, name="woman_wage", marker=dict(color="#f57e7a")))
 fig3_pv_fillna.update_layout(
-    title_text="직종 별 - 나이 별 - 성별 임금(Bar) by 2-Depth 데이터 and 5년 그룹화 물가상승률 적용되었고 나이결측치 채우며 고정된 나이범위 (중간값의 평균)",
+    title_text="직종 별 - 나이 별 - 성별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
     legend=dict(orientation="v"),
     yaxis=dict(
         title=dict(text="Wage(만원)"),
-        side="left"),
-    yaxis2=dict(
-        title=dict(text="Growth(%)"),
-        side="right",
-        overlaying="y"))
+        side="left"))
+
+filtered_data_count_pv_fillna_5years2 = data_2depth_pv_fillna_5years2[data_2depth_pv_fillna_5years2["depth2"] == int(dropdown[:2])]
+# filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
+# Create figure with secondary y-axis
+fig3_pv_fillna2 = make_subplots(specs=[[{"secondary_y": True}]])
+# Add traces
+fig3_pv_fillna2.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years2["p_age_range"].values,
+                     y=filtered_data_count_pv_fillna_5years2["median_wage"].values, marker=dict(color='#5aeda6')))
+# fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years2[filtered_data_count_pv_fillna_5years2["p_sex2"] == 2]["p_age_range"].values,
+#                      y=filtered_data_count_pv_fillna_5years2[filtered_data_count_pv_fillna_5years2["p_sex2"] == 2]["median_wage"].values, name="woman_wage", marker=dict(color="#f57e7a")))
+fig3_pv_fillna2.update_layout(
+    title_text="직종 별 - 나이 별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
+    legend=dict(orientation="v"),
+    yaxis=dict(
+        title=dict(text="Wage(만원)"),
+        side="left"))
+
 
 
 with col1:
-    st.header("물가상승률 적용 X")
-    st.plotly_chart(fig)
-    st.plotly_chart(fig2)
-    st.plotly_chart(fig3)
+    st.header("성별 구분 O")
+    st.plotly_chart(fig3_pv_fillna)
+    # st.header("물가상승률 적용 X")
+    # st.plotly_chart(fig)
+    # st.plotly_chart(fig2)
+    # st.plotly_chart(fig3)
 
 with col2:
-    st.header("물가상승률 적용 O")
-    st.plotly_chart(fig_pv)
-    st.plotly_chart(fig2_pv)
-    st.plotly_chart(fig3_pv)
+    st.header("성별 구분 X")
+    st.plotly_chart(fig3_pv_fillna2)
+    # st.header("물가상승률 적용 O")
+    # st.plotly_chart(fig_pv)
+    # st.plotly_chart(fig2_pv)
+    # st.plotly_chart(fig3_pv)
 
-st.plotly_chart(fig3_pv_fillna)
 
 
 # st.bar_chart(data_2depth[data_2depth["depth"]==int(dropdown[:2])][["p_age","median_growth"]])
