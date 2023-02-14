@@ -186,9 +186,8 @@ fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_
 fig3_pv_fillna.update_layout(
     title_text="직종 별 - 나이 별 - 성별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
     legend=dict(orientation="v"),
-    yaxis=dict(
-        title=dict(text="Wage(만원)"),
-        side="left"))
+    xaxis=dict(title="Age(세)"),
+    yaxis=dict(title="Wage(만원)"))
 
 filtered_data_count_pv_fillna_5years2 = data_2depth_pv_fillna_5years2[data_2depth_pv_fillna_5years2["depth2"] == int(dropdown[:2])]
 # filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
@@ -201,10 +200,8 @@ fig3_pv_fillna2.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years2["p_age_
 #                      y=filtered_data_count_pv_fillna_5years2[filtered_data_count_pv_fillna_5years2["p_sex2"] == 2]["median_wage"].values, name="woman_wage", marker=dict(color="#f57e7a")))
 fig3_pv_fillna2.update_layout(
     title_text="직종 별 - 나이 별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
-    legend=dict(orientation="v"),
-    yaxis=dict(
-        title=dict(text="Wage(만원)"),
-        side="left"))
+    xaxis=dict(title="Age(세)"),
+    yaxis=dict(title="Wage(만원)"))
 
 
 
