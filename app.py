@@ -28,21 +28,9 @@ st.write("그래프 = 5년 단위로 그룹화")
 st.write("기본적인 나이에 대한 범위는 20~64세 이며, 이후의 나이 범위에 데이터가 존재하는 경우에만 그래프는 보여집니다.")
 
 # Dropdown Menu
-# dropdown = st.selectbox("*직종을 선택해주세요.*", data_depth["definition2"])
-dropdown = st.selectbox("*직종 분류를 선택해주세요.*", np.sort(data["code"].unique()))
+dropdown = st.selectbox("*직종 분류를 선택해주세요.*", data_depth["definition2"])
 
-# col1, col2 = st.columns(2)
-
-filtered_data = data[data["code"]==dropdown]
-# st.write(filtered_data)
-fig = make_subplots()
-fig.add_trace(go.Bar(x=filtered_data["p_age_range"].values, y=filtered_data["wage_median"].values, marker=dict(color='#6288f0')))
-fig.update_layout(
-    title_text="직종 별 - 나이 별 임금(Bar) by 새로운 분류 코드 데이터 (중간값의 평균)",
-    xaxis=dict(title="Age(세)"),
-    yaxis=dict(title="Wage(만원)"))
-
-st.plotly_chart(fig)
+col1, col2 = st.columns(2)
 
 # filtered_data_count = data_2depth[data_2depth["depth"] == int(dropdown[:2])]
 
@@ -190,51 +178,60 @@ st.plotly_chart(fig)
 #         side="right",
 #         overlaying="y"))
 
-# filtered_data_count_pv_fillna_5years = data_2depth_pv_fillna_5years[data_2depth_pv_fillna_5years["depth2"] == int(dropdown[:2])]
-# filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
+filtered_data_count_pv_fillna_5years = data_2depth_pv_fillna_5years[data_2depth_pv_fillna_5years["depth2"] == int(dropdown[:2])]
+filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
 # Create figure with secondary y-axis
-# fig3_pv_fillna = make_subplots(specs=[[{"secondary_y": True}]])
+fig3_pv_fillna = make_subplots()
 # Add traces
-# fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 1]["p_age_range"].values,
-#                      y=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 1]["median_wage"].values, name="man_wage", marker=dict(color='#556ff2')))
-# fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 2]["p_age_range"].values,
-#                      y=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 2]["median_wage"].values, name="woman_wage", marker=dict(color="#f57e7a")))
-# fig3_pv_fillna.update_layout(
-#     title_text="직종 별 - 나이 별 - 성별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
-#     legend=dict(orientation="v"),
-#     xaxis=dict(title="Age(세)"),
-#     yaxis=dict(title="Wage(만원)"))
-#
-# filtered_data_count_pv_fillna_5years2 = data_2depth_pv_fillna_5years2[data_2depth_pv_fillna_5years2["depth2"] == int(dropdown[:2])]
-# # filtered_data_count_pv_fillna_5years = filtered_data_count_pv_fillna_5years.dropna()
-# # Create figure with secondary y-axis
-# fig3_pv_fillna2 = make_subplots(specs=[[{"secondary_y": True}]])
-# # Add traces
-# fig3_pv_fillna2.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years2["p_age_range"].values,
-#                      y=filtered_data_count_pv_fillna_5years2["median_wage"].values, marker=dict(color='#5aeda6')))
-# # fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years2[filtered_data_count_pv_fillna_5years2["p_sex2"] == 2]["p_age_range"].values,
-# #                      y=filtered_data_count_pv_fillna_5years2[filtered_data_count_pv_fillna_5years2["p_sex2"] == 2]["median_wage"].values, name="woman_wage", marker=dict(color="#f57e7a")))
-# fig3_pv_fillna2.update_layout(
-#     title_text="직종 별 - 나이 별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
-#     xaxis=dict(title="Age(세)"),
-#     yaxis=dict(title="Wage(만원)"))
+fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 1]["p_age_range"].values,
+                     y=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 1]["median_wage"].values, name="man_wage", marker=dict(color='#556ff2')))
+fig3_pv_fillna.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 2]["p_age_range"].values,
+                     y=filtered_data_count_pv_fillna_5years[filtered_data_count_pv_fillna_5years["p_sex2"] == 2]["median_wage"].values, name="woman_wage", marker=dict(color="#f57e7a")))
+fig3_pv_fillna.update_layout(
+    title_text="직종 별 - 나이 별 - 성별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
+    legend=dict(orientation="v"),
+    xaxis=dict(title="Age(세)"),
+    yaxis=dict(title="Wage(만원)"))
 
-# with col1:
-#     st.header("성별 구분 O")
-#     st.plotly_chart(fig3_pv_fillna)
+filtered_data_count_pv_fillna_5years2 = data_2depth_pv_fillna_5years2[data_2depth_pv_fillna_5years2["depth2"] == int(dropdown[:2])]
+# Create figure with secondary y-axis
+fig3_pv_fillna2 = make_subplots()
+# Add traces
+fig3_pv_fillna2.add_trace(go.Bar(x=filtered_data_count_pv_fillna_5years2["p_age_range"].values,
+                     y=filtered_data_count_pv_fillna_5years2["median_wage"].values, marker=dict(color='#5aeda6')))
+fig3_pv_fillna2.update_layout(
+    title_text="직종 별 - 나이 별 임금(Bar) by 2-Depth 데이터 (중간값의 평균)",
+    xaxis=dict(title="Age(세)"),
+    yaxis=dict(title="Wage(만원)"))
+
+with col1:
+    st.header("성별 구분 O")
+    st.plotly_chart(fig3_pv_fillna)
 #     # st.header("물가상승률 적용 X")
 #     # st.plotly_chart(fig)
 #     # st.plotly_chart(fig2)
 #     # st.plotly_chart(fig3)
 #
-# with col2:
-#     st.header("성별 구분 X")
-#     st.plotly_chart(fig3_pv_fillna2)
+with col2:
+    st.header("성별 구분 X")
+    st.plotly_chart(fig3_pv_fillna2)
     # st.header("물가상승률 적용 O")
     # st.plotly_chart(fig_pv)
     # st.plotly_chart(fig2_pv)
     # st.plotly_chart(fig3_pv)
 
+dropdown2 = st.selectbox("*직종 분류를 선택해주세요.*", np.sort(data["code"].unique()))
+
+filtered_data = data[data["code"]==dropdown2]
+# st.write(filtered_data)
+fig = make_subplots()
+fig.add_trace(go.Bar(x=filtered_data["p_age_range"].values, y=filtered_data["wage_median"].values, marker=dict(color='#803e7e')))
+fig.update_layout(
+    title_text="직종 별 - 나이 별 임금(Bar) by 새로운 분류 코드 데이터 (중간값의 평균)",
+    xaxis=dict(title="Age(세)"),
+    yaxis=dict(title="Wage(만원)"))
+
+st.plotly_chart(fig)
 
 
 # st.bar_chart(data_2depth[data_2depth["depth"]==int(dropdown[:2])][["p_age","median_growth"]])
